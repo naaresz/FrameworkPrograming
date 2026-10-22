@@ -22,8 +22,8 @@ export class BooksController {
 
     //menampilkan data buku berdasarkan id
     @Get(':id')
-    getBooksById(@Param('id') id: string) {
-        return this.booksService.findById(Number(id));
+    getBooksById(@Param('id', ParseIntPipe) id: string) {
+        return this.booksService.findById(id);
     }
 
     //
