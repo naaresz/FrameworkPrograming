@@ -1,4 +1,4 @@
-import { Injectable} from '@nestjs/common';
+import { Injectable, NotFoundException} from '@nestjs/common';
 import { Book } from './entities/book-entity.js';
 import { CreateBooksDto } from './dto/create-book.dto.js';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,7 +25,33 @@ export class BooksService {
         return await this.bookRepository.save(newBook)
     }
 
-     async findById(id: string): Promise<Book | null> {
-        return await this.bookRepository.findOneBy({ id });
+    async findById(id: string): Promise<Book> {
+        const book = await this.bookRepository.findOneBy({id})
+
+        //jika tidak ada
+        if(!book){
+            //tampilkan error
+            throw new NotFoundException(`Buku ${id} tidak ditemukan`)
+        }
+
+        return book
+        //return await this.bookRepository.findOneBy({ id });
+    }
+
+    async update(id: string, updateBook:CreateBooksDto): Promise<Book>{
+        const book = await this.findById(id)
+
+        const updatedBook = this.bookRepository.merge(book, updateBook);
+
+        return await this.bookRepository.save(updatedBook)
+    }
+
+    async remove(id: string): Promise<{message:string, deleteId:string}>{
+        await this.bookRepository.softDelete(id)
+
+        return {
+            message: `Buku ${id} berhasil dihapus`,
+            deleteId: id
+        }
     }
 }

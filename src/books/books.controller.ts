@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } 
 import { BooksService } from './books.service.js';
 import { CreateBooksDto } from './dto/create-book.dto.js';
 import { Book } from './entities/book-entity.js';
+import { dot } from 'node:test/reporters';
 
 @Controller('books')
 export class BooksController {
@@ -28,8 +29,9 @@ export class BooksController {
 
     //
     @Put(':id')
-    updateBookById(@Param('id') id: string): string {
-        return `Data buku dengan id: ${id} berhasil diupdate`;
+    updateBook(@Param('id') id: string, @Body() dto:CreateBooksDto) {
+        return this.booksService.update(id, dto)
+        //return `Data buku dengan id: ${id} berhasil diupdate`;
     }
 
     // @Patch(':id')
