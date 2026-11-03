@@ -12,9 +12,4 @@ export class CreateOrderDto {
     @IsNotEmpty({ message: "Status order harus diisi" })
     @IsString()
     readonly status: string;
-
-    @IsNotEmpty({ message: "Total pembayaran harus diisi" })
-    @IsNumber({}, { message: "Total pembayaran harus berupa angka" })
-    @Min(0)
-    readonly totalAmount: number;
 }

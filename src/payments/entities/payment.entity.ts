@@ -1,6 +1,4 @@
-import { CreateDateColumn, Entity, JoinColumn, OneToOne } from "typeorm";
-import { PrimaryGeneratedColumn } from "typeorm/browser/index.js";
-import { Column } from "typeorm/decorator/columns/Column.js";
+import { CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, Column, type Relation} from "typeorm";
 import { Order } from "../../orders/entities/order.entity.js";
 
 @Entity({name: 'payments'})
@@ -10,7 +8,7 @@ export class Payment{
 
     @OneToOne(() => Order, (item) => item.payment)
     @JoinColumn({name:'order_id'})
-    order: Order;
+    order: Relation<Order>;
 
     @Column({name: 'payment_method', type:'varchar', length:50})
     paymentMethod: string;

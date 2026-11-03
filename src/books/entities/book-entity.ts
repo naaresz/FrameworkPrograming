@@ -1,9 +1,7 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, JoinColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Author } from "../../author/entities/author.entity.js";
-import { JoinColumn } from "typeorm/browser/index.js";
 import { Category } from "../../categories/entities/categories.entity.js";
 import { Publisher } from "../../publishers/entities/publishers.entity.js";
-import Joi from "joi";
 import { OrderItem } from "../../order_items/entities/order-item.entity.js";
 
 @Entity({name:'books'})
@@ -14,10 +12,7 @@ export class Book{
     @Column({type:'varchar', length:100})
     title: string;
 
-    @Column({type: 'varchar', length:50})
-    author: string;
-
-    @Column({type: 'varchar', length:100})
+    @Column({type: 'varchar', length:100, unique: true})
     isbn: string;
 
     @Column({type: 'int', default:0})
@@ -42,21 +37,21 @@ export class Book{
 
     @ManyToOne(() => Category, (item) => item.books)
     @JoinColumn({name:'category_id'})
-    categories: Category[];
+    categories: Category;
 
     @ManyToOne(() => Publisher, (item) => item.books)
     @JoinColumn({name:'publisher_id'})
-    publisher: Publisher[];
+    publisher: Publisher;
 
     @OneToMany(() => OrderItem, (item) => item.book)
-    orderItems: OrderItem[];
+    orderItems: OrderItem;
 
-    @CreateDateColumn({name: 'created_at'})
+    @CreateDateColumn({name: 'created_at', type: 'timestamp'})
     createdAt: Date;
 
-    @UpdateDateColumn({name: 'update_at'})
+    @UpdateDateColumn({name: 'update_at', type: 'timestamp'})
     updateAt: Date;
 
-    @DeleteDateColumn({name: 'deleted_at', nullable: true})
-    deleteAt: Date | null;
+    @DeleteDateColumn({name: 'deleted_at', type: 'timestamp', nullable: true})
+    deletedAt: Date | null;
 }

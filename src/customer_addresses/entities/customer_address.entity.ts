@@ -1,8 +1,6 @@
-import { Entity, JoinColumn, ManyToOne, UpdateDateColumn } from "typeorm";
-import { CreateDateColumn, PrimaryGeneratedColumn } from "typeorm/browser/index.js";
-import { Column } from "typeorm/decorator/columns/Column.js";
+import { Entity, JoinColumn, ManyToOne, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, Column } from "typeorm";
+import type { Relation } from "typeorm";
 import { Customer } from "../../customers/entities/customers.entity.js";
-import Joi from "joi";
 
 @Entity({name: 'customer_addresses'})
 export class CustomerAddress{
@@ -11,10 +9,7 @@ export class CustomerAddress{
 
     @ManyToOne(() => Customer, (item) => item.addresses)
     @JoinColumn({name: 'customer_id'})
-    customer: Customer;
-
-    @Column({type: 'uuid', name: 'customer_id'})
-    customerId: string;
+    customer: Relation<Customer>;
 
     @Column({type:'varchar', length:150})
     recipientName: string;

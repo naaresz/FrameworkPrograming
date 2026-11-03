@@ -1,6 +1,4 @@
-import { Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { PrimaryGeneratedColumn } from "typeorm/browser/index.js";
-import { Column } from "typeorm/decorator/columns/Column.js";
+import { PrimaryGeneratedColumn, Entity, JoinColumn, ManyToOne, Column, type Relation,  } from "typeorm";
 import { Order } from "../../orders/entities/order.entity.js";
 import { Book } from "../../books/entities/book-entity.js";
 
@@ -11,11 +9,11 @@ export class OrderItem{
 
     @ManyToOne(() => Order, (item) => item.orderItems)
     @JoinColumn({name:'order_id'})
-    order: Order;
+    order: Relation<Order>;
     
     @ManyToOne(() => Book, (item) => item.orderItems)
     @JoinColumn({name:'book_id'})
-    book: Book;
+    book: Relation<Book>;
 
     @Column({type:'int'})
     quantity: number;

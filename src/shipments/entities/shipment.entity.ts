@@ -1,6 +1,4 @@
-import { CreateDateColumn, Entity, JoinColumn, OneToOne } from "typeorm";
-import { PrimaryGeneratedColumn } from "typeorm/browser/index.js";
-import { Column } from "typeorm/decorator/columns/Column.js";
+import { PrimaryGeneratedColumn, Column, Entity, JoinColumn, OneToOne, type Relation } from "typeorm";
 import { Order } from "../../orders/entities/order.entity.js";
 
 @Entity({name: 'shipments'})
@@ -10,7 +8,7 @@ export class Shipment{
 
     @OneToOne(() => Order, (item) => item.shipment)
     @JoinColumn({name:'order_id'})
-    order: Order;
+    order: Relation<Order>;
 
     @Column({type:'varchar', length:100})
     courier: string;

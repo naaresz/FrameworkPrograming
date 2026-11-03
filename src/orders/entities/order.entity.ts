@@ -1,7 +1,4 @@
-import { Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, UpdateDateColumn } from "typeorm";
-import { PrimaryGeneratedColumn } from "typeorm/browser/index.js";
-import { Column } from "typeorm/decorator/columns/Column.js";
-import { CreateDateColumn } from "typeorm/decorator/columns/CreateDateColumn.js";
+import { PrimaryGeneratedColumn, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, type Relation, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Customer } from "../../customers/entities/customers.entity.js";
 import { OrderItem } from "../../order_items/entities/order-item.entity.js";
 import { Payment } from "../../payments/entities/payment.entity.js";
@@ -14,7 +11,7 @@ export class Order{
 
     @ManyToOne(() => Customer, (item) => item.orders)
     @JoinColumn({name:'customer_id'})
-    customer: Customer;
+    customer: Relation<Customer>;
 
     @Column({name:'order_number', type:'varchar', length:50, unique:true})
     orderNumber: string;

@@ -1,4 +1,4 @@
-import { IsBoolean, IsInt, IsNotEmpty, IsString } from "class-validator";
+import { IsBoolean, IsInt, IsNotEmpty, IsString, IsUUID } from "class-validator";
 
 export class CreateBooksDto{
     @IsNotEmpty({message: "Judul buku harus diisi"})
@@ -12,6 +12,9 @@ export class CreateBooksDto{
     @IsNotEmpty({message:"Publish Year Harus diisi"})
     @IsInt({message:"PublishYear harus berupa angka"})
     readonly publishedYear: number;
+
+    @IsBoolean({ message: "Status ketersediaan harus berupa boolean" })
+    readonly isAvailable: boolean
 
     @IsNotEmpty({message: "Harga buku harus diisi"})
     @IsInt({message: "Harga buku harus berupa angka"})

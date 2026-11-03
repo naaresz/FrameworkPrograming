@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, ParseUUIDPipe, Patch, Post, Put } from '@nestjs/common';
 import { BooksService } from './books.service.js';
 import { CreateBooksDto } from './dto/create-book.dto.js';
 import { Book } from './entities/book-entity.js';
 import { dot } from 'node:test/reporters';
+import { UpdateBookDto } from './dto/update-book.dto.js';
 
 @Controller('books')
 export class BooksController {
@@ -29,7 +30,7 @@ export class BooksController {
 
     //
     @Put(':id')
-    updateBook(@Param('id') id: string, @Body() dto:CreateBooksDto) {
+    updateBook(@Param('id', ParseUUIDPipe) id: string, @Body() dto:UpdateBookDto) {
         return this.booksService.update(id, dto)
         //return `Data buku dengan id: ${id} berhasil diupdate`;
     }
@@ -40,7 +41,7 @@ export class BooksController {
     // }
 
     @Delete(':id')
-    deleteBooksById(@Param('id') id: string): string {
-       return `Data buku dengan id: ${id} berhasil dihapus`;
+    deleteBooksById(@Param('id', ParseUUIDPipe) id: string) {
+       return this.booksService.remove(id);
     }
 }

@@ -1,7 +1,4 @@
-import { Entity, OneToMany } from "typeorm";
-import { CreateDateColumn, PrimaryGeneratedColumn } from "typeorm/browser/index.js";
-import { Column } from "typeorm/decorator/columns/Column.js";
-import { Timestamp } from "typeorm/driver/mongodb/bson.typings.js";
+import { Entity, OneToMany, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, Column } from "typeorm";
 import { Book } from "../../books/entities/book-entity.js";
 
 @Entity({name: 'publishers'})
@@ -17,9 +14,9 @@ export class Publisher{
     })
     books: Book[];
 
-    @CreateDateColumn({name: 'created_at'})
-    createdAt: Timestamp;
+    @CreateDateColumn({name: 'created_at', type: 'timestamp'})
+    createdAt: Date;
 
-    @CreateDateColumn({name: 'update_at'})
-    updateAt: Timestamp;
+    @UpdateDateColumn({name: 'update_at', type: 'timestamp'})
+    updateAt: Date;
 }
