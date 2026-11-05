@@ -1,13 +1,4 @@
-import {
-    Controller,
-    Get,
-    Post,
-    Body,
-    Param,
-    Put,
-    Delete,
-    ParseUUIDPipe
-} from '@nestjs/common';
+import {Controller, Get, Post, Body, Param, Put, Delete, ParseUUIDPipe} from '@nestjs/common';
 
 import { CategoriesService } from './categories.service.js';
 import { CreateCategoryDto } from './dto/create-categories.dto.js';
@@ -17,6 +8,7 @@ import { UpdateCategoryDto } from './dto/update-categories.dto.js';
 export class CategoriesController {
     constructor(private readonly categoriesService: CategoriesService) {}
 
+    //Mencari semua data kategori
     @Get()
     getCategories() {
         return this.categoriesService.findAll();
@@ -29,19 +21,17 @@ export class CategoriesController {
 
     @Get(':id')
     getCategoryById(@Param('id', ParseUUIDPipe) id: string) {
-        return this.categoriesService.findById(id);
+        return this.categoriesService.findOne(id);
     }
 
     @Put(':id')
-    updateCategory(
-        @Param('id', ParseUUIDPipe) id: string,
-        @Body() updateCategoryDto: UpdateCategoryDto
+    update( id: string, updateCategory: CreateCategoryDto
     ) {
-        return this.categoriesService.update(id, updateCategoryDto);
+        return this.categoriesService.update(id, updateCategory);
     }
 
     @Delete(':id')
-    deleteCategory(@Param('id', ParseUUIDPipe) id: string) {
+    remove(@Param('id') id:string){
         return this.categoriesService.remove(id);
     }
 }

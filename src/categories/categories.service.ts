@@ -9,32 +9,38 @@ import { UpdateCategoryDto } from './dto/update-categories.dto.js';
 export class CategoriesService {
     constructor(
         @InjectRepository(Category)
-        private readonly categoryRepository: Repository<Category>
+        private categoryRepository: Repository<Category>
     ) {}
 
+    //menghapus data kategori berdasarkan id
+    
+    //Mencari semua data kategori
     async findAll(): Promise<Category[]> {
         return await this.categoryRepository.find({
             order: { createdAt: 'DESC' }
         });
     }
-
+    
+    //membuat data kategori baru
     async create(category: CreateCategoryDto): Promise<Category> {
         const newCategory = this.categoryRepository.create(category);
         return await this.categoryRepository.save(newCategory);
     }
-
-    async findById(id: string): Promise<Category> {
+    
+    //mencari data kategori berdasarkan id
+    async findOne(id: string): Promise<Category> {
         const category = await this.categoryRepository.findOneBy({ id });
-
+        
         if (!category) {
-            throw new NotFoundException('Kategori tidak ditemukan');
+            throw new NotFoundException('Kategori ${id} tidak ditemukan');
         }
-
+        
         return category;
     }
-
-    async update(id: string, updateCategory: UpdateCategoryDto): Promise<Category> {
-        const category = await this.findById(id);
+    
+    //mengubah data kategori berdasarkan id
+    async update(id: string, updateCategory: CreateCategoryDto): Promise<Category> {
+        const category = await this.findOne(id);
 
         const updatedCategory = this.categoryRepository.merge(
             category,
@@ -44,13 +50,12 @@ export class CategoriesService {
         return await this.categoryRepository.save(updatedCategory);
     }
 
-    async remove(id: string): Promise<{ message: string; deleteId: string }> {
-        await this.findById(id);
-        await this.categoryRepository.delete(id);
-
-        return {
-            message: 'Kategori berhasil dihapus',
-            deleteId: id
-        };
+    async remove(id: string) {
+        const category = await this.findOne(id);
+        return this.categoryRepository.remove(category);
+        // return {
+        //     message: 'Kategori berhasil dihapus',
+        //     deleteId: id
+        // };
     }
 }

@@ -24,7 +24,7 @@ export class Customer{
     })
     addresses: CustomerAddress[];
 
-    @OneToMany(() => Order, (item) => item.customer)
+    @OneToMany(() => Order, (order) => order.customer)
     orders: Order[];
 
     @CreateDateColumn({name: 'created_at', type: 'timestamp'})
